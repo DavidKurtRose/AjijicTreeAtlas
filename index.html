@@ -173,24 +173,7 @@
     margin-left:.7rem;
   }
 
-  /* ---------- footer ---------- */
-  footer{
-    max-width:980px;
-    width:100%;
-    margin:clamp(2.5rem,6vw,4rem) auto 0;
-    padding-top:1.4rem;
-    border-top:1px solid var(--line);
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:.8rem;
-    font-family:"IBM Plex Mono",monospace;
-    font-size:.72rem;
-    letter-spacing:.08em;
-    color:var(--sage);
-  }
-
-  /* ---------- load animation ---------- */
+   /* ---------- load animation ---------- */
   @media (prefers-reduced-motion:no-preference){
     .reveal{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
     .title-row{animation-delay:.05s}
@@ -230,7 +213,7 @@
         <circle cx="84" cy="10" r="3" fill="var(--gold)" stroke="none"/>
       </svg>
     </div>
-    <p class="lede reveal">A atlas of the trees of the mountains around Ajijic, Jalisco, MX<strong>what grows here, how to know it.</strong></p>
+    <p class="lede reveal">An atlas of the trees of the mountains around Ajijic, Jalisco, MX</p>
   </header>
 
   <main>
@@ -272,11 +255,6 @@
       <span class="arrow">→</span>
     </a>
   </main>
-
-  <footer class="reveal">
-    <span>Ajijic Tree Atlas</span>
-    <span>A community record · Open to all</span>
-  </footer>
 
 </body>
 </html>

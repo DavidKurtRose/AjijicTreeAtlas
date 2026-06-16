@@ -1,7 +1,7 @@
 // First thing: // starts a comment, that tells the atlas author
 // how this file works for her, to declare and define her atlas.
 
-// This file should be in a folder named, for example, "Tree Atlas".
+// This file should be in a folder named, for example, "AjijicTreeAtlas".
 // It should be named for example MyAtlas Plan.txt .
 // The only requirements are that the name must end with "Plan",
 // and it must be a text file.

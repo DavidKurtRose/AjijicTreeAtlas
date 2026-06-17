@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajijic Tree Atlas</title>
+<title>Welcome</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
     display:flex;
     flex-direction:column;
     -webkit-font-smoothing:antialiased;
-    padding:clamp(1.5rem,5vw,4rem);
+    padding:clamp(1.25rem,4vw,2.25rem);
   }
   .mono{font-family:"IBM Plex Mono",monospace}
 
@@ -59,7 +59,7 @@
     justify-content:space-between;
     align-items:flex-end;
     gap:2rem;
-    margin-top:1.6rem;
+    margin-top:0;
   }
   h1{
     font-weight:600;
@@ -92,7 +92,7 @@
   main{
     max-width:980px;
     width:100%;
-    margin:clamp(2.5rem,6vw,4.5rem) auto 0;
+    margin:clamp(1.25rem,3vw,2rem) auto 0;
   }
   .contents-label{
     font-family:"IBM Plex Mono",monospace;
@@ -104,7 +104,7 @@
   }
   .entry{
     display:grid;
-    grid-template-columns:auto 1fr auto;
+    grid-template-columns:1fr auto;
     align-items:baseline;
     gap:clamp(1rem,3vw,2.4rem);
     padding:clamp(1.1rem,2.6vw,1.6rem) .6rem;
@@ -190,9 +190,9 @@
   @keyframes draw{to{stroke-dashoffset:0}}
 
   @media (max-width:620px){
-    .title-row{flex-direction:column;align-items:flex-start}
-    .branch{align-self:flex-end;margin-top:-2rem}
-    .entry{grid-template-columns:auto 1fr;gap:1rem}
+    .title-row{gap:1rem;align-items:center}
+    .branch{width:clamp(84px,22vw,130px)}
+    .entry{grid-template-columns:1fr;gap:1rem}
     .entry .arrow{display:none}
   }
 </style>
@@ -200,7 +200,6 @@
 <body>
 
   <header>
-    <p class="eyebrow reveal">Lake Chapala · Jalisco · México</p>
     <div class="title-row reveal">
       <h1>Ajijic<em>Tree Atlas</em></h1>
       <svg class="branch" viewBox="0 0 200 240" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -213,45 +212,62 @@
         <circle cx="84" cy="10" r="3" fill="var(--gold)" stroke="none"/>
       </svg>
     </div>
-    <p class="lede reveal">An atlas of the trees in the mountains around Ajijic, Jalisco, MX</p>
   </header>
 
   <main>
-    <p class="contents-label reveal">Did you know about the tab-box?
-	It's the small box next to the menu icon with a number in it.
-	If you use it instead of back-arrow, you can easily 
-	navigate between the Intro, Guide, and Atlas.
-	</p>
-	<p class="contents-label reveal">
-	Btw, if your tab-box has a big number in it, 
-	you are wasting lots of memory. You should
-	clean it up: Tap it, and start tapping X's.
-	</p>
-    <a class="entry reveal" href="Introduction.html" target="_blank">
-      <span class="label">
-        <span class="name">Introduction</span>
-        <span class="desc">Read this first, and keep it in its own tab for reference. </span>
-      </span>
-      <span class="arrow">→</span>
-    </a>
+    
 
     <a class="entry reveal" href="Guide.html" target="_blank">
       <span class="label">
         <span class="name">Guide</span>
-        <span class="desc">Tells you how to navigate the atlas.</span>
+        <span class="desc">Read this first; use tab button  
+		<svg viewBox="0 0 24 24" width="1.05em" height="1.05em" role="img"
+         aria-label="tab switcher button" fill="none" stroke="currentColor"
+         stroke-width="1.8" style="vertical-align:-0.18em;">
+      <rect x="4" y="4" width="16" height="16" rx="4"/>
+      <text x="12" y="12.5" font-size="9" font-weight="600" text-anchor="middle"
+            dominant-baseline="central" fill="currentColor" stroke="none"
+            font-family="system-ui, sans-serif">3</text>
+    </svg>
+	  to return here</span>
       </span>
       <span class="arrow">→</span>
     </a>
 
-    <a class="entry reveal" href="Atlas.html" target="_blank">
+ <a class="entry reveal" href="Introduction.html" target="_blank">
+      <span class="label">
+        <span class="name">Introduction</span>
+        <span class="desc">Read this next; use tab button  
+		<svg viewBox="0 0 24 24" width="1.05em" height="1.05em" role="img"
+         aria-label="tab switcher button" fill="none" stroke="currentColor"
+         stroke-width="1.8" style="vertical-align:-0.18em;">
+      <rect x="4" y="4" width="16" height="16" rx="4"/>
+      <text x="12" y="12.5" font-size="9" font-weight="600" text-anchor="middle"
+            dominant-baseline="central" fill="currentColor" stroke="none"
+            font-family="system-ui, sans-serif">3</text>
+    </svg>
+	  to return here
+		</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>   <a class="entry reveal" href="Atlas.html" target="_blank">
       <span class="label">
         <span class="name">Atlas</span>
-        <span class="desc">The atlas itself .</span>
+        <span class="desc">The atlas itself; use tab button 
+		<svg viewBox="0 0 24 24" width="1.05em" height="1.05em" role="img"
+         aria-label="tab switcher button" fill="none" stroke="currentColor"
+         stroke-width="1.8" style="vertical-align:-0.18em;">
+      <rect x="4" y="4" width="16" height="16" rx="4"/>
+      <text x="12" y="12.5" font-size="9" font-weight="600" text-anchor="middle"
+            dominant-baseline="central" fill="currentColor" stroke="none"
+            font-family="system-ui, sans-serif">3</text>
+    </svg>
+		for reviews</span>
       </span>
       <span class="arrow">→</span>
     </a>
 
-    <a class="entry reveal" href="DIY.html" target="_blank">
+    <a class="entry reveal" href="https://DavidKurtRose.github.io/DIY.html" target="_blank">
       <span class="label">
         <span class="name">DIY<span class="tag">New</span></span>
         <span class="desc">If you have expertise in something, make an atlas for it.</span>

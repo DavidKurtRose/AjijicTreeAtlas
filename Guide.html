@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Gallery — How to Use</title>
+<title>Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,7 +42,7 @@
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     color: #e8e4df;
-    margin-top: 44px;
+    margin-top: 16px;
     margin-bottom: 16px;
     padding-bottom: 6px;
     border-bottom: 1px solid #1e1e26;
@@ -189,16 +189,27 @@
 <body>
 
 <div class="page">
+  <h2>Navigate between Intro, Guide, and Atlas</h2>
+  <p>
+    On your phone, look near-right in the browser toolbar,
+	for the tab button
+    <svg viewBox="0 0 24 24" width="1.05em" height="1.05em" role="img"
+         aria-label="tab switcher button" fill="none" stroke="currentColor"
+         stroke-width="1.8" style="vertical-align:-0.18em;">
+      <rect x="4" y="4" width="16" height="16" rx="4"/>
+    </svg>
+     — the little rounded square 
+	that shows how many tabs you have open.
+	Use it to navigate between pages.
+	That way, they remain available for review.
+  </p>
 
-  <h1>Tree Atlas</h1>
-  <p class="subtitle">A guide to navigating and understanding your atlas</p>
+  <h2>Navigate the atlas</h2>
 
-  <!-- ════════ NAVIGATION ════════ -->
-  <h2>Getting Around</h2>
-
-  <p>The gallery is arranged as a table. Each column is a different tree. 
-	  Each row shows a different characteristic of that tree. 
-	  One photo fills the screen at a time.</p>
+  <p>The atlas is arranged as a table. 
+  Each column is a different tree. 
+  Each row shows a different characteristic of that tree. 
+  One photo fills the screen at a time.</p>
 
   <div class="gesture">
     <div class="gesture-icon">
@@ -210,7 +221,9 @@
     </div>
     <div class="gesture-text">
       <div class="gesture-name">Swipe left / right</div>
-      <div class="gesture-desc">Move between trees. Each swipe snaps to the next tree. On desktop, use the arrow buttons or left/right arrow keys.</div>
+      <div class="gesture-desc">Move between trees. 
+	  Each swipe goes to the next column. 
+	  On desktop,  use the arrow buttons or left/right arrow keys.</div>
     </div>
   </div>
 
@@ -224,10 +237,14 @@
     </div>
     <div class="gesture-text">
       <div class="gesture-name">Scroll up / down</div>
-      <div class="gesture-desc">Move between rows within a tree. Each scroll snaps to the next characteristic.</div>
+      <div class="gesture-desc">Move between characteristics.
+	  Each scroll goes to the next row.
+	  On desktop, use the mouse scroll-wheel outside the photo.
+	  </div>
     </div>
   </div>
 
+  
   <!-- ════════ ZOOM ════════ -->
   <h2>Viewing Photos Up Close</h2>
 
@@ -245,7 +262,8 @@
     </div>
     <div class="gesture-text">
       <div class="gesture-name">Pinch</div>
-      <div class="gesture-desc">Two finger pinch zooms in or out. On desktop, use the scroll wheel.</div>
+      <div class="gesture-desc">Two finger pinch zooms in or out. 
+	  On desktop, use the scroll-wheel inside the photo.</div>
     </div>
   </div>
 
@@ -259,15 +277,18 @@
     </div>
     <div class="gesture-text">
       <div class="gesture-name">Drag</div>
-      <div class="gesture-desc">When zoomed in, drag with one finger to pan around the photo and explore details. Swipe or scroll to 
-	  other columns or rows outside the photo.</div>
+      <div class="gesture-desc">When zoomed in, drag with one finger 
+	  to pan around the photo and explore details. Just outside the photo,
+	  you can still swipe or scroll.</div>
     </div>
   </div>
 
   <!-- ════════ ROWS ════════ -->
   <h2>What the Rows Mean</h2>
 
-  <p>Each tree column follows the same structure from top to bottom, so you can compare the same characteristic across different trees by swiping left or right.</p>
+  <p>Each column follows the same structure from top to bottom, 
+  so you can compare the same characteristic across different 
+  subjects by swiping left or right.</p>
 
   <div class="row-list">
     <div class="row-item">
@@ -305,7 +326,8 @@
   <!-- ════════ EMPTY CELLS ════════ -->
   <h2>Empty Cells</h2>
 
-  <p>When a characteristic doesn't apply to a particular subject, the photo is replaced by a sky-blue card with three dots:
+  <p>When a characteristic doesn't apply to a particular tree, 
+  the photo is replaced by a sky-blue card with three dots:
     <span class="na-sample">
       <svg width="50" height="20" viewBox="0 0 50 20" fill="none">
         <circle cx="15" cy="10" r="3" fill="#1e4a6a"/>
@@ -315,7 +337,14 @@
     </span>
   </p>
 
-  <p>The caption below will explain why. The cell is kept in place so that rows stay aligned across all columns — swiping sideways always lands on the same characteristic.</p>
+  <p>The caption below may explain why. 
+  The cell is kept in place so that rows stay aligned 
+  across all columns — swiping sideways always lands 
+  on the same characteristic.</p>
+  
+  <p>
+  Now, use the tab-button to return where you came from.
+  </p>
 
 </body>
 </html>

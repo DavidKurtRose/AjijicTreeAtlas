@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0e0e12;
+    --bg2: #14141c;
+    --bg3: #1a1a24;
+    --border: #252530;
+    --text: #e0ddd8;
+    --text2: #9a958e;
+    --accent: #7a9a6a;
+    --accent2: #5a6a50;
+    --warn: #c07060;
+    --gold: #b0a060;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ════════════════════════════════════════
+     OPEN FILE SCREEN
+     ════════════════════════════════════════ */
+  #openScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 24px;
+    padding: 40px;
+  }
+  #openScreen h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  #openScreen p {
+    color: var(--text2);
+    font-size: 0.9rem;
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+  #openScreen label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--accent2);
+    color: #e8e4df;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  #openScreen label:hover { background: var(--accent); }
+  #openScreen input[type="file"] { display: none; }
+  #errorMsg {
+    color: var(--warn);
+    font-size: 0.82rem;
+    min-height: 20px;
+  }
+
+  /* ════════════════════════════════════════
+     EDITOR — TOP BAR
+     ════════════════════════════════════════ */
+  #editorScreen { display: none; height: 100vh; flex-direction: column; }
+  #editorScreen.active { display: flex; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    gap: 8px;
+    z-index: 200;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 6px; }
+
+  .topbar .tree-select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    max-width: 160px;
+    cursor: pointer;
+  }
+  .topbar .row-select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    max-width: 130px;
+    cursor: pointer;
+  }
+
+  .tb-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 0.72rem;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .tb-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tb-btn.primary { border-color: var(--accent2); color: var(--accent); background: rgba(122,154,106,0.1); }
+  .tb-btn.primary:hover { background: rgba(122,154,106,0.2); }
+  .tb-btn.danger { border-color: #4a2a2a; color: var(--warn); }
+  .tb-btn.danger:hover { background: rgba(192,112,96,0.1); }
+
+  /* ════════════════════════════════════════
+     MAIN AREA: PHOTO + EDIT PANEL
+     ════════════════════════════════════════ */
+  .main-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── Photo display (left / top on mobile) ── */
+  .photo-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    min-width: 0;
+    background: var(--bg);
+  }
+
+  .photo-pane .row-label-display {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+
+  .photo-pane .img-frame {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 9 / 16;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+    background: var(--bg3);
+    position: relative;
+  }
+  .photo-pane .img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-pane .img-frame .no-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text2);
+    font-size: 0.85rem;
+  }
+
+  .photo-pane .photo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-top: 16px;
+    color: var(--text);
+    text-align: center;
+  }
+  .photo-pane .photo-caption {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-top: 6px;
+    color: var(--text2);
+    font-weight: 300;
+    text-align: center;
+    max-width: 340px;
+  }
+
+  /* Navigation arrows within photo pane */
+  .pane-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(14,14,18,0.8);
+    color: var(--text2);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    z-index: 10;
+  }
+  .pane-arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .pane-arrow.left { left: 10px; }
+  .pane-arrow.right { right: 10px; }
+
+  .pane-arrow-v {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(14,14,18,0.8);
+    color: var(--text2);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    z-index: 10;
+  }
+  .pane-arrow-v:hover { border-color: var(--accent); color: var(--accent); }
+  .pane-arrow-v.up { top: 8px; }
+  .pane-arrow-v.down { bottom: 8px; }
+
+  /* Position indicators */
+  .pos-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+  }
+  .pos-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #333;
+    transition: background 0.2s;
+  }
+  .pos-dot.active { background: var(--accent); }
+
+  .pos-pips {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+  .pos-pip {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #2a2a2a;
+    transition: background 0.2s;
+  }
+  .pos-pip.active { background: var(--accent); }
+
+  /* ── Edit panel (right / bottom on mobile) ── */
+  .edit-pane {
+    width: 360px;
+    flex-shrink: 0;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .edit-pane h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .field-group { margin-bottom: 16px; }
+  .field-group label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent2);
+    margin-bottom: 5px;
+  }
+  .field-group input,
+  .field-group textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field-group input:focus,
+  .field-group textarea:focus { border-color: var(--accent); }
+  .field-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.5;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  /* ════════════════════════════════════════
+     RESPONSIVE: stack vertically on narrow
+     ════════════════════════════════════════ */
+  @media (max-width: 760px) {
+    .main-area { flex-direction: column; }
+    .photo-pane { flex: none; height: 55vh; padding: 14px; }
+    .photo-pane .img-frame { max-width: 200px; }
+    .edit-pane { width: 100%; border-left: none; border-top: 1px solid var(--border); flex: 1; }
+    .topbar { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ OPEN FILE SCREEN ════════════════ -->
+<div id="openScreen">
+  <h1>Gallery Editor</h1>
+  <p>Open one of your <strong>photo-gallery.html</strong> files to browse, edit photos, titles, and captions, add new rows or columns, then save the updated file.</p>
+  <label>
+    📂 Open Gallery HTML File
+    <input type="file" id="fileInput" accept=".html,.htm">
+  </label>
+  <div id="errorMsg"></div>
+</div>
+
+<!-- ════════════════ EDITOR SCREEN ════════════════ -->
+<div id="editorScreen">
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <select class="tree-select" id="colSelect"></select>
+      <select class="row-select" id="rowSelect"></select>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn" id="btnAddRow">+ Row</button>
+      <button class="tb-btn" id="btnAddCol">+ Column</button>
+      <button class="tb-btn danger" id="btnDelRow">− Row</button>
+      <button class="tb-btn danger" id="btnDelCol">− Column</button>
+      <button class="tb-btn primary" id="btnSave">💾 Save HTML</button>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div class="main-area">
+    <!-- Photo display -->
+    <div class="photo-pane" id="photoPane">
+      <button class="pane-arrow left" id="navLeft">‹</button>
+      <button class="pane-arrow right" id="navRight">›</button>
+      <button class="pane-arrow-v up" id="navUp">‹</button>
+      <button class="pane-arrow-v down" id="navDown">›</button>
+
+      <div class="row-label-display" id="rowLabelDisplay"></div>
+      <div class="img-frame" id="imgFrame">
+        <img id="mainImg" src="" alt="" style="display:none;">
+        <div class="no-img" id="noImg">No photo</div>
+      </div>
+      <div class="photo-title" id="photoTitle"></div>
+      <div class="photo-caption" id="photoCaption"></div>
+
+      <div class="pos-dots" id="hDots"></div>
+      <div class="pos-pips" id="vPips"></div>
+    </div>
+
+    <!-- Edit panel -->
+    <div class="edit-pane" id="editPane">
+      <h3 id="editHeading">Edit Card</h3>
+
+      <div class="field-group">
+        <label>Column Name</label>
+        <input type="text" id="fColName" placeholder="e.g. Japanese Maple">
+      </div>
+      <div class="field-group">
+        <label>Latin / Subtitle</label>
+        <input type="text" id="fColLatin" placeholder="e.g. Acer palmatum">
+      </div>
+
+      <hr class="divider">
+
+      <div class="field-group">
+        <label>Row Label</label>
+        <input type="text" id="fRowLabel" placeholder="e.g. Full Tree, Leaf, Bark...">
+      </div>
+      <div class="field-group">
+        <label>Photo URL</label>
+        <input type="text" id="fSrc" placeholder="https://example.com/photo.jpg">
+      </div>
+      <div class="field-group">
+        <label>Title</label>
+        <input type="text" id="fTitle" placeholder="Photo title">
+      </div>
+      <div class="field-group">
+        <label>Caption</label>
+        <textarea id="fCaption" rows="3" placeholder="Photo caption"></textarea>
+      </div>
+
+      <hr class="divider">
+      <p style="font-size:0.7rem; color:#4a4a4a; line-height:1.5;">Changes apply immediately as you type. Use <strong>Save HTML</strong> to download the updated gallery file.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let galleryData = [];   // array of { name, latin, photos: [{ rowLabel, title, caption, src, row }] }
+let rowLabels = [];
+let templateHTML = "";   // the raw HTML template (everything except galleryData)
+let curCol = 0;
+let curRow = 0;
+
+// ── DOM refs ──
+const openScreen   = document.getElementById('openScreen');
+const editorScreen = document.getElementById('editorScreen');
+const fileInput    = document.getElementById('fileInput');
+const errorMsg     = document.getElementById('errorMsg');
+
+const colSelect = document.getElementById('colSelect');
+const rowSelect = document.getElementById('rowSelect');
+
+const rowLabelDisplay = document.getElementById('rowLabelDisplay');
+const mainImg     = document.getElementById('mainImg');
+const noImg       = document.getElementById('noImg');
+const photoTitle  = document.getElementById('photoTitle');
+const photoCaption = document.getElementById('photoCaption');
+const editHeading = document.getElementById('editHeading');
+
+const fColName  = document.getElementById('fColName');
+const fColLatin = document.getElementById('fColLatin');
+const fRowLabel = document.getElementById('fRowLabel');
+const fSrc      = document.getElementById('fSrc');
+const fTitle    = document.getElementById('fTitle');
+const fCaption  = document.getElementById('fCaption');
+
+const hDots = document.getElementById('hDots');
+const vPips = document.getElementById('vPips');
+
+// ══════════════════════════════════════════════════════════
+// FILE LOADING & PARSING
+// ══════════════════════════════════════════════════════════
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  errorMsg.textContent = '';
+
+  try {
+    const text = await file.text();
+    parseGalleryHTML(text);
+    templateHTML = text;
+    showEditor();
+  } catch (err) {
+    errorMsg.textContent = 'Error: ' + err.message;
+  }
+});
+
+function parseGalleryHTML(html) {
+  // Extract the galleryData array from the script
+  // Look for: const galleryData = [ ... ];
+  const dataMatch = html.match(/const\s+galleryData\s*=\s*(\[[\s\S]*?\n\];)/);
+  if (!dataMatch) throw new Error('Could not find galleryData in this HTML file. Make sure it\'s a photo-gallery.html file.');
+
+  // Extract rowLabels if present
+  const rlMatch = html.match(/const\s+rowLabels\s*=\s*(\[[\s\S]*?\]);/);
+  if (rlMatch) {
+    try { rowLabels = eval(rlMatch[1]); } catch { rowLabels = []; }
+  }
+
+  // Parse the data using Function constructor (safer than eval on untrusted code, but this is the user's own file)
+  try {
+    galleryData = new Function('return ' + dataMatch[1])();
+  } catch (err) {
+    throw new Error('Could not parse galleryData: ' + err.message);
+  }
+
+  if (!Array.isArray(galleryData) || galleryData.length === 0) {
+    throw new Error('galleryData is empty or not an array.');
+  }
+
+  // Ensure each photo has a rowLabel (derive from rowLabels + row index if missing)
+  galleryData.forEach(col => {
+    col.photos.forEach((p, i) => {
+      if (!p.rowLabel) {
+        p.rowLabel = (rowLabels && rowLabels[p.row] != null) ? rowLabels[p.row] : ('Row ' + (i + 1));
+      }
+    });
+  });
+
+  curCol = 0;
+  curRow = 0;
+}
+
+// ══════════════════════════════════════════════════════════
+// SHOW EDITOR
+// ══════════════════════════════════════════════════════════
+function showEditor() {
+  openScreen.style.display = 'none';
+  editorScreen.classList.add('active');
+  rebuildSelects();
+  render();
+}
+
+// ══════════════════════════════════════════════════════════
+// SELECTS & NAVIGATION
+// ══════════════════════════════════════════════════════════
+function rebuildSelects() {
+  // Column select
+  colSelect.innerHTML = '';
+  galleryData.forEach((col, i) => {
+    const o = document.createElement('option');
+    o.value = i;
+    o.textContent = (i + 1) + '. ' + col.name;
+    colSelect.appendChild(o);
+  });
+  colSelect.value = curCol;
+
+  rebuildRowSelect();
+}
+
+function rebuildRowSelect() {
+  rowSelect.innerHTML = '';
+  const col = galleryData[curCol];
+  if (!col) return;
+  col.photos.forEach((p, i) => {
+    const o = document.createElement('option');
+    o.value = i;
+    o.textContent = (i + 1) + '. ' + p.rowLabel;
+    rowSelect.appendChild(o);
+  });
+  rowSelect.value = curRow;
+}
+
+colSelect.addEventListener('change', () => {
+  curCol = parseInt(colSelect.value);
+  curRow = 0;
+  rebuildRowSelect();
+  render();
+});
+
+rowSelect.addEventListener('change', () => {
+  curRow = parseInt(rowSelect.value);
+  render();
+});
+
+// Arrow navigation
+document.getElementById('navLeft').addEventListener('click', () => {
+  if (curCol > 0) { curCol--; curRow = Math.min(curRow, galleryData[curCol].photos.length - 1); colSelect.value = curCol; rebuildRowSelect(); render(); }
+});
+document.getElementById('navRight').addEventListener('click', () => {
+  if (curCol < galleryData.length - 1) { curCol++; curRow = Math.min(curRow, galleryData[curCol].photos.length - 1); colSelect.value = curCol; rebuildRowSelect(); render(); }
+});
+document.getElementById('navUp').addEventListener('click', () => {
+  if (curRow > 0) { curRow--; rowSelect.value = curRow; render(); }
+});
+document.getElementById('navDown').addEventListener('click', () => {
+  const col = galleryData[curCol];
+  if (col && curRow < col.photos.length - 1) { curRow++; rowSelect.value = curRow; render(); }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowLeft')  document.getElementById('navLeft').click();
+  if (e.key === 'ArrowRight') document.getElementById('navRight').click();
+  if (e.key === 'ArrowUp')    { e.preventDefault(); document.getElementById('navUp').click(); }
+  if (e.key === 'ArrowDown')  { e.preventDefault(); document.getElementById('navDown').click(); }
+});
+
+// ══════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════
+function render() {
+  const col = galleryData[curCol];
+  if (!col) return;
+  const photo = col.photos[curRow];
+  if (!photo) return;
+
+  // Photo display
+  rowLabelDisplay.textContent = photo.rowLabel;
+  if (photo.src) {
+    mainImg.src = photo.src;
+    mainImg.alt = photo.title;
+    mainImg.style.display = 'block';
+    noImg.style.display = 'none';
+  } else {
+    mainImg.style.display = 'none';
+    noImg.style.display = 'flex';
+  }
+  photoTitle.textContent = photo.title;
+  photoCaption.textContent = photo.caption;
+  editHeading.textContent = col.name + ' — ' + photo.rowLabel;
+
+  // Edit fields (without triggering input events)
+  setFieldSilent(fColName, col.name);
+  setFieldSilent(fColLatin, col.latin || '');
+  setFieldSilent(fRowLabel, photo.rowLabel);
+  setFieldSilent(fSrc, photo.src);
+  setFieldSilent(fTitle, photo.title);
+  setFieldSilent(fCaption, photo.caption);
+
+  // Dots
+  renderDots();
+}
+
+function setFieldSilent(el, val) {
+  if (document.activeElement !== el) el.value = val;
+}
+
+function renderDots() {
+  hDots.innerHTML = '';
+  galleryData.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'pos-dot' + (i === curCol ? ' active' : '');
+    hDots.appendChild(d);
+  });
+
+  vPips.innerHTML = '';
+  const col = galleryData[curCol];
+  if (!col) return;
+  col.photos.forEach((_, i) => {
+    const p = document.createElement('div');
+    p.className = 'pos-pip' + (i === curRow ? ' active' : '');
+    vPips.appendChild(p);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// LIVE EDITING
+// ══════════════════════════════════════════════════════════
+fColName.addEventListener('input', () => {
+  galleryData[curCol].name = fColName.value;
+  // Update select text
+  colSelect.options[curCol].textContent = (curCol + 1) + '. ' + fColName.value;
+  render();
+});
+
+fColLatin.addEventListener('input', () => {
+  galleryData[curCol].latin = fColLatin.value;
+});
+
+fRowLabel.addEventListener('input', () => {
+  galleryData[curCol].photos[curRow].rowLabel = fRowLabel.value;
+  rowSelect.options[curRow].textContent = (curRow + 1) + '. ' + fRowLabel.value;
+  render();
+});
+
+fSrc.addEventListener('input', () => {
+  galleryData[curCol].photos[curRow].src = fSrc.value;
+  render();
+});
+
+fTitle.addEventListener('input', () => {
+  galleryData[curCol].photos[curRow].title = fTitle.value;
+  render();
+});
+
+fCaption.addEventListener('input', () => {
+  galleryData[curCol].photos[curRow].caption = fCaption.value;
+  render();
+});
+
+// ══════════════════════════════════════════════════════════
+// ADD / DELETE
+// ══════════════════════════════════════════════════════════
+document.getElementById('btnAddRow').addEventListener('click', () => {
+  const col = galleryData[curCol];
+  const newRow = {
+    rowLabel: 'New Row',
+    title: 'Title',
+    caption: 'Caption',
+    src: '',
+    row: col.photos.length
+  };
+  col.photos.push(newRow);
+  curRow = col.photos.length - 1;
+  rebuildRowSelect();
+  render();
+});
+
+document.getElementById('btnAddCol').addEventListener('click', () => {
+  const ts = Date.now();
+  const newCol = {
+    name: 'New Column',
+    latin: 'Subtitle',
+    photos: [
+      { rowLabel: 'Full Tree', title: 'Title', caption: 'Caption', src: '', row: 0 },
+    ]
+  };
+  galleryData.push(newCol);
+  curCol = galleryData.length - 1;
+  curRow = 0;
+  rebuildSelects();
+  render();
+});
+
+document.getElementById('btnDelRow').addEventListener('click', () => {
+  const col = galleryData[curCol];
+  if (col.photos.length <= 1) { alert('A column must have at least one row.'); return; }
+  if (!confirm('Delete row "' + col.photos[curRow].rowLabel + '"?')) return;
+  col.photos.splice(curRow, 1);
+  // Re-index row numbers
+  col.photos.forEach((p, i) => p.row = i);
+  if (curRow >= col.photos.length) curRow = col.photos.length - 1;
+  rebuildRowSelect();
+  render();
+});
+
+document.getElementById('btnDelCol').addEventListener('click', () => {
+  if (galleryData.length <= 1) { alert('Gallery must have at least one column.'); return; }
+  if (!confirm('Delete column "' + galleryData[curCol].name + '" and all its photos?')) return;
+  galleryData.splice(curCol, 1);
+  if (curCol >= galleryData.length) curCol = galleryData.length - 1;
+  curRow = 0;
+  rebuildSelects();
+  render();
+});
+
+// ══════════════════════════════════════════════════════════
+// SAVE — Rebuild the HTML file with updated data
+// ══════════════════════════════════════════════════════════
+document.getElementById('btnSave').addEventListener('click', () => {
+  // Rebuild the galleryData JS string
+  const dataStr = buildGalleryDataString();
+
+  // Rebuild the rowLabels from unique row labels across all columns
+  const allRowLabels = [];
+  let maxRows = 0;
+  galleryData.forEach(col => { if (col.photos.length > maxRows) maxRows = col.photos.length; });
+  for (let i = 0; i < maxRows; i++) {
+    // Use the rowLabel from the first column that has this row
+    let label = 'Row ' + (i + 1);
+    for (const col of galleryData) {
+      if (col.photos[i] && col.photos[i].rowLabel) { label = col.photos[i].rowLabel; break; }
+    }
+    allRowLabels.push(label);
+  }
+  const rlStr = 'const rowLabels = ' + JSON.stringify(allRowLabels) + ';';
+
+  // Replace in template
+  let output = templateHTML;
+
+  // Replace rowLabels
+  output = output.replace(/const\s+rowLabels\s*=\s*\[[\s\S]*?\];/, rlStr);
+
+  // Replace galleryData
+  output = output.replace(/const\s+galleryData\s*=\s*\[[\s\S]*?\n\];/, 'const galleryData = ' + dataStr + ';');
+
+  // Download
+  const blob = new Blob([output], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'photo-gallery.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+function buildGalleryDataString() {
+  let s = '[\n';
+  galleryData.forEach((col, ci) => {
+    s += '  {\n';
+    s += '    name: ' + JSON.stringify(col.name) + ',\n';
+    s += '    latin: ' + JSON.stringify(col.latin || '') + ',\n';
+    s += '    photos: [\n';
+    col.photos.forEach((p, pi) => {
+      s += '      { ';
+      s += 'title: ' + JSON.stringify(p.title) + ', ';
+      s += 'caption: ' + JSON.stringify(p.caption) + ', ';
+      s += 'row: ' + pi + ', ';
+      s += 'src: ' + JSON.stringify(p.src);
+      s += ' }';
+      if (pi < col.photos.length - 1) s += ',';
+      s += '\n';
+    });
+    s += '    ]\n';
+    s += '  }';
+    if (ci < galleryData.length - 1) s += ',';
+    s += '\n';
+  });
+  s += ']';
+  return s;
+}
+</script>
+</body>
+</html>

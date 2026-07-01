@@ -1,0 +1,182 @@
+
+If you are knowledgeable about some area of science, culture, 
+art, anything, consider creating an Altas yourself.
+It's a fair amount of work, but it's rewarding.
+If you are interested, read on. 
+
+The idea behind an Atlas is this:
+You want to present a modest collection of:
+trees, wildflowers, domestic flowers, birds, mushrooms, sculptures, etc, 
+in a forest, on a mountain, in a park, arboretum, botanical garden...,
+textiles, native masks, artworks, minerals, or cars in a museum...
+distinctive houses, buildings, monuments in a neighborhood, town, or city ...
+
+An "atlas" doesn't have to be an atlas!
+It could be a comparison or contrast among several things,
+like different mathmatical proofs of several propositions.
+It could be a timeline comparing the development of
+metals technologies over time in various parts of the world.
+It could be a comparison of language grammars.
+It could trace the evolution of the eye.
+Anything...
+
+The kind of Atlas you create is a table in two dimensions:
+several columns for the different items of interest,
+and several rows for their shared aspects.
+
+Across the table, the viewer will move from one column to another,
+in the order you feel is most helpful for enjoying
+and understanding the subject of your atlas.
+Up and down, the viewer will move from one aspect to another,
+again in the most helpful order.
+
+As viewer navigates about in the atlas, we say she moves from cell to cell.
+Each cell can contain a photo, audio, video, text, html, 
+photo plus audio, or a text plus audio.
+
+The Atlas-Builder will happily create a big atlas of say, 100 items 
+by 15 aspects, but that will choke an average phone.
+So, if the phone is your target, keep your ambition more modest:
+a sample rather than a comprehensive volume.
+If your target is the PC, then your atlas can be bigger
+because the average PC is more powerful than a phone.
+
+Deliverables
+What to Deliver
+You -- the atlas author -- have to provide at least one html file
+to your reader/user: Atlas.html . It's your atlas, and we'll get
+started building it soon.
+You should also provide the Guide.html 
+that helps the user learn how to use your atlas.
+You may want to provide an Introduction.html that gives  
+reader a greater appreciation of the atlas' subject.
+If you provide all three, then you should also
+provide the index.html file that makes it
+easy for the user to load them into their browser.
+
+How to Deliver Them
+You have to host the above html files on a website.
+Unless you already have your own website,
+you will publish your atlas online at Github.
+It's free and reliable, but somewhat programmer-ish.
+
+So, let's get started.
+
+Setup
+In the Explorer, In your Documents folder, create a new folder named Atlas.
+In folder Atlas, create a new folder named MyAtlas, where
+MyAtlas stands for whatever name you want.
+
+Install Notepad++
+Click: https://notepad-plus-plus.org/downloads/v8.9.6.4/
+Scroll down past several ads until you see the big green button.
+Click it.
+
+Next, open a Github account. 
+1. Go to github.com
+2. Click Sign up
+3. Enter your email address
+4. Create a password
+5. Choose a username, like RonHolmes
+   RonHolmes is likely already taken, 
+   so try Ronald<your middle name>Holmes or something like that.
+6. Solve a quick puzzle to prove you're not a robot
+7. GitHub sends a verification code to your email.
+	Copy it and paste it into the verificaton box.
+	
+You now have an account.
+	
+	
+
+
+Create a Personal Access Token:
+  1. Go to https://github.com/settings/tokens
+  2. Click "Generate new token" → "Generate new token (classic)"
+  3. Give it a name like "Atlas Sync"
+  4. Select the "repo" scope. It's the first of many options;
+	 the rest are all irrelevant.
+  5. Click "Generate token" at the bottom
+  6. Copy the token and paste it into a new tab in Notepad++;
+  then save it into Documents/Atlas/AjijicTreeAtlas as .github_token
+  -- not as a .txt, you have to change the type to *.*
+  
+  While in Notepad++, do <ctrl n> to open a new tab,
+  type in: https://github.com/RonHolme864/AjijicTreeAtlas
+  Right-click the tab, select <Save as>, name it .github_url,
+  set type to *.*  so that it doesn't end up as .txt
+
+You also need to download Git, which is the 
+Version Control app programmers -- and now you too --
+use to build their software.
+
+Click on this: https://git-scm.com/install/windows
+Click on "Click here to download".
+Git-2.54.0-64-bit.exe will show up in your Downloads folder.
+Click it and allow Windows to install it.
+At its finish window the installer will ask what you want to do.
+Click the git bash button.
+
+Now you're in the git bash terminal.
+A terminal is a very basic way to tell some program what to do, in this case Git.
+Commands to Git are entered when you tap the <Enter> key.
+Type in: cd Documents/Atlas/AjijiTreeAtlas<Enter>
+Type in: git clone https://github.com/DavidKurtRose/AjijicTreeAtlas.git<Enter>
+You should get a report that all the stuff at my Github site 
+is being cloned to your PC, into your folder Documents/Atlas/AjijicTreeAtlas.
+Right-click on Documents/Atlas/AjijiTreeAtlas/sync_github.py
+and in the menu click "Open with" > Python.
+
+How to build or modify your atlas:
+Start out by building yourself a  work-space.
+Create a folder like Documents/Atlas where
+you keep your some stuff for building your atlas.
+
+Create folders there for building specific atlases, like 
+Documents/Atlas/AjijicTreeAtlas and 
+Documents/Atlas/AjijicBirdAtlas.
+
+Open Documents/Atlas/MyAtlas/Tree Atlas Plan.txt in  
+Notepad++, and open a new tab next to it.
+Copy-and-paste to create your own plan in the new tab
+The Atlas-Builder will read the following inputs from it:
+a name for the atlas; give it the name Atlas, 
+names for the columns, 
+names for the rows, 
+Captions and subtitles.
+Ron, this is where you add new trees and re-order the columns.
+Then do "Save As" > Documents/Atlas/MyAtlas/MyAtlas Plan.txt
+
+You have to collect all your media into Documents/Atlas/MyAtlas.
+The simplest thing is to name each media item after
+the cell in which it should be displayed,
+for example: oak.tree.jpg, elm.bark.mp4, maple.leaf.txt .
+The extension -- or in MacOS the type -- tells Atlas-Builder
+what type of media goes into the cell.
+
+Run Atlas-Builder.html in the browser of your choice.
+Tap the "Select folder" button and Atlas-Builder opens a file picker.
+Navigate to your MyAtlas folder.
+It's confusing because when you get to Documents/Atlas/MyAtlas
+the file picker complains "No items match your search". 
+Ignore the message and tap the Upload button at lower-right. 
+Then confirm that you trust the "site", which of course is your own folder.
+
+Give Atlas-Builder one of your Atlas Plan.txt files;
+you can have several -- MyAtlas1 Plan.txt, MyAtlas2 Plan.txt, etc. --
+so that you can test and compare various ideas and configurations.
+ 
+When you tap the "Build Atlas" button, 
+Atlas-Builder builds and downloads your Atlas.html
+Run it in a browser on your PC or phone, or both.
+Refine and rebuild until you like what you've created. 
+
+Now comes the hard part: publishing your atlas so that 
+anybody would notice it and be interested enough to use it.
+
+First, it has to be discoverable.
+
+Second, it has to be easy to get: hopefully a single QR-code.
+But that has to point somewhere: a website.
+
+
+ 

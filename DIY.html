@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make Your Own Tree Atlas</title>
+<style>
+  :root{
+    --paper:#f3f0e6;
+    --ink:#21271f;
+    --soft:#5c6657;
+    --green:#2f5d3a;
+    --green-deep:#1d3b26;
+    --gold:#b07d1a;
+    --line:#d6d2c2;
+    --panel:#e9e5d6;
+    --code-bg:#232c22;
+    --code-ink:#e6ecda;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:2rem 1.1rem 4rem;
+  }
+  .wrap{max-width:640px;margin:0 auto}
+
+  header{margin-bottom:2.2rem}
+  .kicker{
+    font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--green);font-weight:700;margin:0 0 .55rem;
+  }
+  h1{
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    font-size:2.2rem;line-height:1.08;margin:0;font-weight:700;letter-spacing:-.012em;
+  }
+  .intro{color:var(--soft);margin:.75rem 0 0;font-size:1.04rem}
+
+  /* signature: filename -> grid map */
+  .map{
+    background:var(--green-deep);color:#dfe7d6;border-radius:12px;
+    padding:1.15rem 1.15rem 1.25rem;margin:1.8rem 0 0;
+  }
+  .map .fn{
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:1.02rem;color:#fff;text-align:center;margin:0 0 .15rem;
+  }
+  .map .fn .col{color:#f0c45a}
+  .map .fn .row{color:#b9a7e0}
+  .map .legend{
+    text-align:center;font-size:.74rem;letter-spacing:.04em;
+    color:#9db295;margin:0 0 .9rem;
+  }
+  .grid{
+    display:grid;grid-template-columns:auto repeat(3,1fr);
+    gap:4px;font-size:.7rem;
+  }
+  .grid div{
+    background:rgba(255,255,255,.05);border-radius:4px;
+    padding:.4rem .2rem;text-align:center;color:#a9bca1;
+    display:flex;align-items:center;justify-content:center;min-height:2.2rem;
+  }
+  .grid .hd{background:transparent;color:#f0c45a;font-weight:700}
+  .grid .rh{background:transparent;color:#b9a7e0;font-weight:700}
+  .grid .on{background:#3c6b48;color:#fff;font-weight:700}
+
+  section{margin-top:2.8rem}
+  .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:1.7rem;height:1.7rem;border-radius:50%;
+    background:var(--green);color:var(--paper);font-weight:700;font-size:.9rem;
+    margin-right:.6rem;vertical-align:.05em;
+  }
+  h2{
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    font-size:1.5rem;margin:0 0 .35rem;font-weight:700;
+  }
+  .sub{color:var(--soft);margin:0 0 1.4rem;font-size:.97rem}
+
+  .step{margin:0 0 1.4rem;padding-left:.2rem}
+  .step h3{font-size:1rem;margin:0 0 .25rem;font-weight:700}
+  .step p{margin:0;color:var(--soft);font-size:.95rem}
+  .step p+p{margin-top:.4rem}
+
+  code{
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    background:var(--panel);padding:.08em .38em;border-radius:4px;
+    font-size:.85em;color:#324031;
+  }
+  pre{
+    background:var(--code-bg);color:var(--code-ink);
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:.83rem;line-height:1.55;
+    padding:.85rem 1rem;border-radius:8px;margin:.7rem 0 0;
+    overflow-x:auto;white-space:pre;
+  }
+  pre .c{color:#8fae8f;font-style:italic}
+  pre .k{color:#f0c45a}
+
+  .note{
+    background:var(--panel);border-left:3px solid var(--gold);
+    padding:.6rem .85rem;border-radius:0 6px 6px 0;
+    margin:.7rem 0 0;font-size:.91rem;color:var(--soft);
+  }
+  .note b{color:var(--ink)}
+
+  .divider{height:2px;background:var(--ink);margin:2.8rem 0 0;opacity:.85}
+
+  footer{margin-top:2.6rem;color:var(--soft);font-size:.92rem;border-top:1px solid var(--line);padding-top:1.1rem}
+  a{color:var(--green);text-underline-offset:2px}
+
+  @media (max-width:420px){
+    h1{font-size:1.85rem}
+    .grid{font-size:.62rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">Ajijic Tree Atlas · Do It Yourself</p>
+    <h1>Make your own tree atlas</h1>
+    <p class="intro">Two stages. First you gather photos and write a short plan, and Atlas-Builder turns them into a single atlas page. Then you put that page online so anyone can open it.</p>
+
+    <div class="map">
+      <p class="fn"><span class="col">Ceiba</span>.<span class="row">bark</span>.jpg</p>
+      <p class="legend">SPECIES (column) · VIEW (row)</p>
+      <div class="grid">
+        <div></div><div class="hd">Ceiba</div><div class="hd">Jacaranda</div><div class="hd">Laurel</div>
+        <div class="rh">bark</div><div class="on">photo</div><div>·</div><div>·</div>
+        <div class="rh">leaves</div><div>·</div><div>·</div><div>·</div>
+        <div class="rh">flowers</div><div>·</div><div>·</div><div>·</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PART 1 ============ -->
+  <section>
+    <h2><span class="num">1</span>Prepare the inputs</h2>
+    <p class="sub">Atlas-Builder reads one folder. Inside it go your photos and a plain-text plan file. The folder can be named anything.</p>
+
+    <div class="step">
+      <h3>Name each photo by where it belongs</h3>
+      <p>A photo's name tells the builder its <strong>species</strong> (a column) and its <strong>view</strong> (a row, like bark or leaves). Use either layout:</p>
+      <pre><span class="c"># one folder, dots between the parts</span>
+Ceiba.bark.jpg
+Ceiba.leaves.jpg
+Jacaranda.flowers.jpg
+
+<span class="c"># or a subfolder per species</span>
+Ceiba/bark.jpg
+Ceiba/leaves.jpg
+Jacaranda/flowers.jpg</pre>
+      <div class="note"><b>Spaces, underscores, and dashes all count as the same.</b> <code>Coast Redwood</code>, <code>Coast_Redwood</code>, and <code>Coast-Redwood</code> land in the same column, so you don't have to be exact.</div>
+    </div>
+
+    <div class="step">
+      <h3>Write the plan file</h3>
+      <p>A plain-text file — name it <code>plan.txt</code> — names the atlas and sets the order of columns and rows. The caption lines add the words shown beneath each species.</p>
+      <pre>Atlas Name: Ajijic Tree Atlas
+subtitle: Trees of the lakeshore
+
+Column: Ceiba
+Column: Jacaranda
+Column: Laurel
+
+Row: bark
+Row: leaves
+Row: flowers
+
+Caption:
+Ceiba: <span class="c">Ceiba pentandra — the kapok.</span>
+Jacaranda: <span class="c">Violet bloom in spring.</span>
+Laurel: <span class="c">Ficus, shade of the plaza.</span></pre>
+      <div class="note">Missing a photo for some cell? Leave it out, or write <code>n/a</code> — the builder shows a quiet placeholder instead of a gap.</div>
+    </div>
+
+    <div class="step">
+      <h3>Run Atlas-Builder</h3>
+      <p>Open <code>Atlas-Builder.html</code> in your browser. Choose your folder, choose <code>plan.txt</code>, then click <b>Build</b>.</p>
+      <p>It resizes every photo and saves one file, <code>Atlas.html</code>, to your computer. That file carries all the photos inside it, so it opens even with no internet.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ PART 2 ============ -->
+  <section>
+    <h2><span class="num">2</span>Publish to GitHub</h2>
+    <p class="sub">Your <code>Atlas.html</code> already works on your own machine. To give it a web address anyone can visit, host it free on GitHub Pages.</p>
+
+    <div class="step">
+      <h3>Make an account and a repository</h3>
+      <p>Sign up at <a href="https://github.com">github.com</a>. Click <b>New</b> to create a repository named <code>AjijicTreeAtlas</code>, set it <b>Public</b>, and check <b>Add a README</b> so it isn't empty.</p>
+    </div>
+
+    <div class="step">
+      <h3>Add your atlas file</h3>
+      <p>Open the repo and choose <b>Add file → Upload files</b>, then drag in <code>Atlas.html</code>. If you have Git installed, you can instead push from the folder:</p>
+      <pre>git add .
+git commit -m <span class="k">"Add the atlas"</span>
+git push</pre>
+    </div>
+
+    <div class="step">
+      <h3>Turn on GitHub Pages</h3>
+      <p>In the repo, open <b>Settings → Pages</b>. Under <b>Source</b>, pick the <code>main</code> branch and the root folder, then <b>Save</b>.</p>
+    </div>
+
+    <div class="step">
+      <h3>Open your live atlas</h3>
+      <p>A minute later it's online:</p>
+      <pre>https://<span class="k">USERNAME</span>.github.io/AjijicTreeAtlas/Atlas.html</pre>
+      <div class="note"><b>Shorter address:</b> rename <code>Atlas.html</code> to <code>index.html</code> and the link becomes just <code>…github.io/AjijicTreeAtlas/</code>.</div>
+    </div>
+  </section>
+
+  <footer>
+    Share that link with anyone, on any device. To update later, rebuild in Part 1 and re-upload the new file in Part 2.
+  </footer>
+
+</div>
+</body>
+</html>

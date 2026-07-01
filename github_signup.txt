@@ -1,0 +1,47 @@
+
+Hi Ron
+I'm coding a Welcome page that loads into 
+separate tabs the atlas, intro, guide, etc.
+
+But for today, try the individual urls.
+Tap this one to open your Intro: 
+DavidKurtRose.github.io/AjijicTreeAtlas/Introduction.html
+
+Tap this one to open the guide that shows how to navigate the atlas:
+DavidKurtRose.github.io/AjijicTreeAtlas/Guide.html
+
+Tap this one to open the atlas:
+DavidKurtRose.github.io/AjijicTreeAtlas/Atlas.html
+
+Let me know if they don't work.
+
+In order for anybody to actually use the atlas, 
+you need a website that makes it available.
+Github is a good place for that. 
+It's free for open source stuff like the atlas. 
+It's reliable.
+It's the place programmers store and control their code.
+
+
+The first thing you should do is open a Github account. 
+1. Go to github.com
+2. Click Sign up
+3. Enter your email address
+4. Create a password
+5. Choose a username, like RonHolmes
+   RonHolmes is likely already taken, 
+   so try Ronald<your middle name>Holmes or something like that.
+6. Solve a quick puzzle to prove you're not a robot
+7. GitHub sends a verification code to your email — enter it
+Done — free account
+
+You also need to download Git, which is the 
+Version Control app programmers -- and now you too --
+use to build their software.
+
+Now you can clone my github site and provide access to the atlas
+with a url named after you, that gives you proper credit.
+Tell me when you have gotten your github account,
+and I'll show you what to do next.
+
+Adios for now.

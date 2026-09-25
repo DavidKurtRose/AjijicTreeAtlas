@@ -15,13 +15,13 @@ body{background:#0e0e12;color:#e8e4df;font-family:-apple-system,'Segoe UI',sans-
 .column-label .tree-name{font-size:1.0rem;color:#e8e4df;letter-spacing:.04em;font-weight:600}
 .column-label .subtitle{font-size:1.0rem;font-style:italic;color:#e8e4df;letter-spacing:.06em;margin-top:2px}
 .card{scroll-snap-align:start;width:100vw;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 28px 84px;overflow:hidden}
-.card .row-label{flex:0 0 auto;font-size:1.0rem;text-transform:uppercase;letter-spacing:.18em;color:#e8e4df;margin-bottom:10px}
-.card .img-wrap{flex:1 1 0;min-height:0;min-width:0;width:auto;max-width:calc(100vw - 56px);max-height:533px;aspect-ratio:9/16;border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);position:relative}
+.card .row-label{font-size:1.0rem;text-transform:uppercase;letter-spacing:.18em;color:#e8e4df;margin-bottom:10px}
+.card .img-wrap{width:100%;max-width:300px;aspect-ratio:9/16;max-height:calc(100dvh - 200px);border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);flex-shrink:0;position:relative}
 .card .img-wrap.na-cell{background:#a8c8e0;display:flex;align-items:center;justify-content:center}
 .card img{width:100%;height:100%;object-fit:cover;display:block;background:#1a1a22;transform-origin:center center;transition:transform .15s ease;user-select:none;-webkit-user-select:none}
 .card video{width:100%;height:100%;object-fit:cover;display:block;background:#1a1a22;border-radius:8px}
-.card .video-wrap{flex:1 1 0;min-height:0;min-width:0;width:auto;max-width:calc(100vw - 56px);max-height:533px;aspect-ratio:9/16;border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);position:relative}
-.card .caption{flex:0 0 auto;font-size:1.0rem;line-height:1.5;margin-top:14px;color:#e8e4df;font-weight:300;text-align:center;max-width:300px}
+.card .video-wrap{width:100%;max-width:300px;aspect-ratio:9/16;max-height:calc(100dvh - 200px);border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);flex-shrink:0;position:relative}
+.card .caption{font-size:1.0rem;line-height:1.5;margin-top:14px;color:#e8e4df;font-weight:300;text-align:center;max-width:300px}
 .card .text-body{width:100%;max-width:300px;aspect-ratio:9/16;overflow-y:auto;padding:24px;background:#14141c;border:1px solid #2a2a34;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.6);font-size:0.95rem;line-height:1.7;color:#e8e4df;font-weight:300;scrollbar-width:thin;scrollbar-color:#2a2a34 transparent}
 .card .text-body::-webkit-scrollbar{width:4px}
 .card .text-body::-webkit-scrollbar-thumb{background:#2a2a34;border-radius:2px}
